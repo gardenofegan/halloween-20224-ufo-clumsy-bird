@@ -16,6 +16,10 @@ game.TitleScreen = me.ScreenObject.extend({
         me.input.bindKey(me.input.KEY.SPACE, "enter", true);
         me.input.bindPointer(me.input.pointer.LEFT, me.input.KEY.ENTER);
 
+        // Add gamepad support
+        me.input.bindGamepad(0, {type: "buttons", code: 0}, me.input.KEY.SPACE);
+        me.input.bindGamepad(0, {type: "buttons", code: 11}, me.input.KEY.ENTER);
+
         this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge) {
             if (action === "enter") {
                 me.state.change(me.state.PLAY);
@@ -47,7 +51,7 @@ game.TitleScreen = me.ScreenObject.extend({
                 // size does not matter, it's just to avoid having a zero size
                 // renderable
                 this._super(me.Renderable, 'init', [0, 0, 100, 100]);
-                this.text = me.device.touch ? 'Tap to start' : 'PRESS SPACE OR CLICK LEFT MOUSE BUTTON TO START \n\t\t\t\t\t\t\t\t\t\t\tPRESS "M" TO MUTE SOUND';
+                this.text = me.device.touch ? 'Tap to start' : 'PRESS BUTTON TO START \n\t\t\t\t\t\t\t\t\t\t\tPRESS "M" TO MUTE SOUND';
                 this.font = new me.Font('gamefont', 20, '#000');
             },
             draw: function (renderer) {

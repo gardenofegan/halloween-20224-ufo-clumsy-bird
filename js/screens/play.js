@@ -15,6 +15,11 @@ game.PlayScreen = me.ScreenObject.extend({
         }
 
         me.input.bindKey(me.input.KEY.SPACE, "fly", true);
+        me.input.bindPointer(me.input.pointer.LEFT, me.input.KEY.SPACE);
+
+        // Add gamepad support
+        me.input.bindGamepad(0, {type: "buttons", code: 0}, me.input.KEY.SPACE);
+
         game.data.score = 0;
         game.data.steps = 0;
         game.data.start = false;
@@ -36,6 +41,7 @@ game.PlayScreen = me.ScreenObject.extend({
 
         //inputs
         me.input.bindPointer(me.input.pointer.LEFT, me.input.KEY.SPACE);
+        
 
         this.getReady = new me.Sprite(
             me.game.viewport.width/2,
@@ -52,6 +58,9 @@ game.PlayScreen = me.ScreenObject.extend({
                 me.game.world.addChild(new game.PipeGenerator(), 0);
                 me.game.world.removeChild(that.getReady);
             }).start();
+
+        // Add gamepad checking to the game loop
+        this.gamepadCheckHandler = me.event.subscribe(me.event.GAME_LOOP, game.checkGamepad);
     },
 
     onDestroyEvent: function() {
@@ -63,5 +72,11 @@ game.PlayScreen = me.ScreenObject.extend({
         this.ground2 = null;
         me.input.unbindKey(me.input.KEY.SPACE);
         me.input.unbindPointer(me.input.pointer.LEFT);
+
+        // Unbind gamepad
+        me.input.unbindGamepad(0, {type: "buttons", code: 0});
+
+        // Unsubscribe from gamepad checking
+        me.event.unsubscribe(this.gamepadCheckHandler);
     }
 });

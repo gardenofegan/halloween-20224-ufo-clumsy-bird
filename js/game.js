@@ -49,7 +49,12 @@ var game = {
 
         me.input.bindKey(me.input.KEY.SPACE, "fly", true);
         me.input.bindKey(me.input.KEY.M, "mute", true);
+        me.input.bindKey(me.input.KEY.ENTER, "enter", true); // Add this line
         me.input.bindPointer(me.input.KEY.SPACE);
+
+        // Add gamepad support
+        me.input.bindGamepad(0, {type: "buttons", code: 0}, me.input.KEY.SPACE);
+        me.input.bindGamepad(0, {type: "buttons", code: 11}, me.input.KEY.ENTER);
 
         me.pool.register("clumsy", game.BirdEntity);
         me.pool.register("pipe", game.PipeEntity, true);
@@ -57,5 +62,21 @@ var game = {
         me.pool.register("ground", game.Ground, true);
 
         me.state.change(me.state.MENU);
+    },
+
+    "checkGamepad": function() {
+        console.log("checkGamepad");
+        var gamepad = navigator.getGamepads()[0];
+        console.log(gamepad);
+        if (gamepad) {
+            if (gamepad.buttons[0].pressed) {
+                console.log("0 pressed");
+                me.input.triggerKeyEvent(me.input.KEY.SPACE, true);
+            }
+            if (gamepad.buttons[11].pressed) {
+                console.log("11 pressed");
+                me.input.triggerKeyEvent(me.input.KEY.ENTER, true);
+            }
+        }
     }
 };

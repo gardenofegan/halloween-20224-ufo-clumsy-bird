@@ -21,6 +21,9 @@ game.GameOverScreen = me.ScreenObject.extend({
         me.input.bindKey(me.input.KEY.SPACE, "enter", false)
         me.input.bindPointer(me.input.pointer.LEFT, me.input.KEY.ENTER);
 
+        // Add gamepad support
+        me.input.bindGamepad(0, {type: "buttons", code: 11}, me.input.KEY.ENTER);
+
         this.handler = me.event.subscribe(me.event.KEYDOWN,
             function (action, keyCode, edge) {
                 if (action === "enter") {
@@ -94,6 +97,9 @@ game.GameOverScreen = me.ScreenObject.extend({
             }
         }));
         me.game.world.addChild(this.dialog, 12);
+
+        // Add gamepad checking to the game loop
+        this.gamepadCheckHandler = me.event.subscribe(me.event.GAME_LOOP, game.checkGamepad);
     },
 
     onDestroyEvent: function() {
@@ -106,5 +112,11 @@ game.GameOverScreen = me.ScreenObject.extend({
         this.ground2 = null;
         this.font = null;
         me.audio.stop("theme");
+
+         // Unbind gamepad
+         me.input.unbindGamepad(0, {type: "buttons", code: 11});
+
+         // Unsubscribe from gamepad checking
+         me.event.unsubscribe(this.gamepadCheckHandler);
     }
 });
