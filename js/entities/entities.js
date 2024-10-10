@@ -155,7 +155,7 @@ game.PipeGenerator = me.Renderable.extend({
         this.alwaysUpdate = true;
         this.generate = 0;
         this.pipeFrequency = 92;
-        this.pipeHoleSize = 1240;
+        this.pipeHoleSize = 1325;
         this.posX = me.game.viewport.width;
     },
 
